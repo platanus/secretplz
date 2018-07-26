@@ -2,12 +2,14 @@ module ApiErrorConcern
   extend ActiveSupport::Concern
 
   included do
-    rescue_from "Exception" do |exception|
-      logger.error exception.message
-      logger.error exception.backtrace.join("\n")
-      respond_api_error(:internal_server_error, message: "server_error",
-                                                type: exception.class.to_s,
-                                                detail: exception.message)
+    if Rails.env.production?
+      rescue_from "Exception" do |exception|
+        logger.error exception.message
+        logger.error exception.backtrace.join("\n")
+        respond_api_error(:internal_server_error, message: "server_error",
+                                                  type: exception.class.to_s,
+                                                  detail: exception.message)
+      end
     end
 
     rescue_from "ActiveRecord::RecordNotFound" do |exception|
