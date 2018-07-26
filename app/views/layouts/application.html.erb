@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Secretplz</title>
+    <title>Conclave</title>
     <%= csrf_meta_tags %>
-    <%= javascript_pack_tag 'application' %>
-
-
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'app_loader' %>
+    <%= stylesheet_pack_tag 'app_loader' %>
   </head>
 
   <body>
-    <%= yield %>
+    <div id="vue-mount-point">
+      <%= yield %>
+    </div>
   </body>
 </html>
