@@ -1,7 +1,6 @@
 source 'https://rubygems.org'
 
 gem 'active_model_serializers', '~> 0.10.7'
-gem 'coffee-rails', '~> 4.2'
 gem 'enumerize'
 gem 'mysql2', '~> 0.3.18'
 gem 'power-types'
