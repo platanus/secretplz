@@ -10,6 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20180726205014) do
 
+  create_table "secret_parts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "secret_id"
+    t.string "key"
+    t.text "encrypted_data"
+    t.index ["secret_id"], name: "index_secret_parts_on_secret_id"
+  end
+
+  create_table "secrets", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "public_key"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["public_key"], name: "index_secrets_on_public_key"
+  end
+
+  add_foreign_key "secret_parts", "secrets"
 end
