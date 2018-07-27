@@ -2,14 +2,6 @@ Rails.application.configure do
     # Verifies that versions and hashed value of the package contents in the project's package.json
   config.webpacker.check_yarn_integrity = false
 
-  config.paperclip_defaults = {
-    storage: :s3,
-    s3_protocol: 'https'
-    s3_region: ENV.fetch('AWS_REGION', 'us-east-1'),
-    s3_credentials: {
-      bucket: ENV['S3_BUCKET']
-    }
-  }
   config.force_ssl = true
   config.cache_classes = true
   config.eager_load = true
