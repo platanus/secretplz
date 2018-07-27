@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180726205014) do
+ActiveRecord::Schema.define(version: 20180727182343) do
 
   create_table "secret_parts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "secret_id"
@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 20180726205014) do
     t.string "public_key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["public_key"], name: "index_secrets_on_public_key"
+    t.string "uuid"
   end
 
   add_foreign_key "secret_parts", "secrets"

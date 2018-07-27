@@ -12,4 +12,10 @@ RSpec.describe Secret, type: :model do
   describe "validations" do
     it { is_expected.to validate_presence_of :public_key }
   end
+
+  describe "uuid" do
+    it "automatically generates a new uuid on creation" do
+      expect(create(:secret).uuid).not_to eq create(:secret).uuid
+    end
+  end
 end
