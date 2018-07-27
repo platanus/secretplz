@@ -25,6 +25,7 @@
 .eslintrc.json
 .sscs-lint.yml
 .env.local
+.env.test
 .env
 node_modules/
 /public/system/*

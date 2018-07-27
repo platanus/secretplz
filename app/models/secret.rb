@@ -32,9 +32,9 @@ end
 # Table name: secrets
 #
 #  id         :bigint(8)        not null, primary key
-#  public_key :string(255)
+#  public_key :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  uuid       :string(255)
+#  uuid       :string
 #  sealed_at  :datetime
 #

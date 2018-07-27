@@ -18,8 +18,8 @@ end
 #
 #  id             :bigint(8)        not null, primary key
 #  secret_id      :bigint(8)
-#  key            :string(255)
-#  encrypted_data :text(65535)
+#  key            :string
+#  encrypted_data :text
 #
 # Indexes
 #
