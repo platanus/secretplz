@@ -1,4 +1,4 @@
-module ApiErrorConcern
+module ErrorConcern
   extend ActiveSupport::Concern
 
   included do
@@ -13,22 +13,22 @@ module ApiErrorConcern
     end
 
     rescue_from "ActiveRecord::RecordNotFound" do |exception|
-      respond_api_error(:not_found, message: "record_not_found",
-                                    detail: exception.message)
+      respond_api_error :not_found, message: "record_not_found", detail: exception.message
     end
 
     rescue_from "ActiveModel::ForbiddenAttributesError" do |exception|
-      respond_api_error(:bad_request, message: "protected_attributes",
-                                      detail: exception.message)
+      respond_api_error :bad_request, message: "protected_attributes", detail: exception.message
     end
 
     rescue_from "ActiveRecord::RecordInvalid" do |exception|
-      respond_api_error(:bad_request, message: "invalid_attributes",
-                                      errors: exception.record.errors)
+      respond_api_error :bad_request, message: "invalid_attributes", errors: exception.record.errors
     end
   end
 
   def respond_api_error(status, error = {})
-    render json: error, status: status
+    respond_with do |format|
+      format.html { render html: '<html>doh!</html>'.html_safe, status: status }
+      format.json { render json: error, status: status }
+    end
   end
 end

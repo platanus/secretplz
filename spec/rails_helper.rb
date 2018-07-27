@@ -48,6 +48,7 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
 
   config.include FactoryBot::Syntax::Methods
+  config.include ActiveModelSerializers::Test::Serializer, type: :controller
 end
 
 Shoulda::Matchers.configure do |config|
