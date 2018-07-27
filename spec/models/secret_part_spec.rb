@@ -14,5 +14,12 @@ RSpec.describe SecretPart, type: :model do
     it { is_expected.to validate_presence_of :encrypted_data }
     it { is_expected.to validate_uniqueness_of(:key).scoped_to(:secret_id) }
     it { is_expected.to allow_value(nil).for(:key) }
+
+    it "validates that secret is not sealed" do
+      secret = create(:secret)
+      expect(build(:secret_part, secret: secret)).to be_valid
+      secret.seal!
+      expect(build(:secret_part, secret: secret)).not_to be_valid
+    end
   end
 end

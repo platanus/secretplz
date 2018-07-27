@@ -3,6 +3,13 @@ class SecretPart < ApplicationRecord
 
   validates_presence_of :secret, :encrypted_data
   validates_uniqueness_of :key, scope: [:secret_id]
+  validate :secret_is_not_sealed
+
+  private
+
+  def secret_is_not_sealed
+    errors.add(:secret, 'secret is sealed') if secret.present? && secret.sealed?
+  end
 end
 
 # == Schema Information
