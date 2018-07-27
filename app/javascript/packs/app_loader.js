@@ -6,15 +6,16 @@
 // All it does is render <div>Hello Vue</div> at the bottom of the page.
 
 // Import base css components
-// import '../styles/common.scss';
+import '../styles/common.scss';
 
 import Vue from 'vue';
-import PasswordForm from '../components/password_form.vue';
+import SimpleSecretForm from '../components/simple_secret_form.vue';
+import SimpleSecretDisplay from '../components/simple_secret_display.vue';
 
 document.addEventListener('DOMContentLoaded', () => {
   new Vue({
     el: '#vue-mount-point',
-    components: { PasswordForm },
+    components: { SimpleSecretForm, SimpleSecretDisplay },
   });
 });
 
