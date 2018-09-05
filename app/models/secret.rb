@@ -37,4 +37,6 @@ end
 #  updated_at :datetime         not null
 #  uuid       :string
 #  sealed_at  :datetime
+#  message    :text
+#  signature  :string
 #

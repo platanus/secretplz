@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180727185842) do
+ActiveRecord::Schema.define(version: 20180905185536) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,8 @@ ActiveRecord::Schema.define(version: 20180727185842) do
     t.datetime "updated_at", null: false
     t.string "uuid"
     t.datetime "sealed_at"
+    t.text "message"
+    t.string "signature"
   end
 
   add_foreign_key "secret_parts", "secrets"
