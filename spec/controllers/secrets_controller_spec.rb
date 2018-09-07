@@ -4,6 +4,13 @@ RSpec.describe SecretsController, type: :controller do
   context "given an existing secret" do
     let!(:secret) { create(:secret) }
 
+    describe "GET #index" do
+      it "renders index.html if format: html" do
+        get :index, params: { format: :html }
+        expect(response).to render_template(:index)
+      end
+    end
+
     describe "POST #create" do
       let(:public_key) { '02' * 33 }
 
@@ -11,6 +18,24 @@ RSpec.describe SecretsController, type: :controller do
         post :create, params: { public_key: public_key, format: :json }
         expect(response).to have_http_status(:created)
         expect(assigns(:secret).public_key).to eq public_key
+        assert_serializer 'SecretSerializer'
+      end
+
+      let(:valid_sig) do
+        'H14wy79iaR30kfvhnUQhjLXH6Vd/KAoYQ7TkKKT41Fk1EkikmtYdddD47TbkeunjfNNyVJxx/jXFY4I17jv72GE='
+      end
+
+      it "properly handles message and signature parameters" do
+        post(
+          :create,
+          params: { public_key: public_key, message: 'foo', signature: valid_sig, format: :json }
+        )
+
+        expect(response).to have_http_status(:created)
+        expect(assigns(:secret).public_key).to eq public_key
+        expect(assigns(:secret).message).to eq 'foo'
+        expect(assigns(:secret).signature).to eq valid_sig
+
         assert_serializer 'SecretSerializer'
       end
 

@@ -3,6 +3,8 @@ class SecretsController < ApplicationController
 
   respond_to :html, :json
 
+  def index; end
+
   def create
     @secret = Secret.create! create_params
 
@@ -39,7 +41,7 @@ class SecretsController < ApplicationController
   def create_params
     {
       public_key: secret_params.require(:public_key)
-    }
+    }.merge secret_params.permit(:message, :signature)
   end
 
   def secret_params

@@ -1,5 +1,5 @@
 class SecretSerializer < ActiveModel::Serializer
-  attributes :id, :public_key, :sealed_at, :parts
+  attributes :id, :public_key, :message, :signature, :sealed_at, :parts
 
   def id
     object.uuid
