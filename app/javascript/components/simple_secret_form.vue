@@ -1,5 +1,9 @@
 <template>
   <div class="simple-secret-form" v-if="secret">
+    <div class="simple-secret-form__header">
+      <identity-bar :secret="secret"></identity-bar>
+    </div>
+
     <div class="simple-secret-form__content">
       <div class="simple-secret-form__message">
         <span v-if="secret.message">{{ secret.message }}</span>
@@ -32,6 +36,8 @@
 import ecies from '../services/simple_ecies';
 import api from '../services/api';
 
+import IdentityBar from './identity_bar.vue';
+
 export default {
   data: () => ({
     secret: null,
@@ -39,6 +45,9 @@ export default {
     encryptedValue: '',
     canSubmit: false,
   }),
+  components: {
+    'identity-bar': IdentityBar,
+  },
   methods: {
     submit(_event) {
       if (this.secretValue.length > 0) {
