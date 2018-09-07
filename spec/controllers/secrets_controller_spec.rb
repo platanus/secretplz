@@ -38,11 +38,6 @@ RSpec.describe SecretsController, type: :controller do
 
         assert_serializer 'SecretSerializer'
       end
-
-      it "redirects to show if format: html" do
-        post :create, params: { public_key: public_key, format: :html }
-        expect(response).to redirect_to action: :show, id: assigns(:secret).uuid
-      end
     end
 
     describe "GET #show" do
@@ -51,11 +46,6 @@ RSpec.describe SecretsController, type: :controller do
         expect(response).to have_http_status(:success)
         expect(assigns(:secret)).to eq secret
         assert_serializer 'SecretSerializer'
-      end
-
-      it "renders new.html if format: html" do
-        get :show, params: { id: secret.uuid, format: :html }
-        expect(response).to render_template(:show)
       end
     end
 
@@ -72,7 +62,7 @@ RSpec.describe SecretsController, type: :controller do
 
       it "redirects to show if format: html" do
         put :update, params: { id: secret.uuid, encrypted_data: 'foobar', format: :html }
-        expect(response).to redirect_to action: :show, id: secret.uuid
+        expect(response).to render_template(:update)
       end
     end
   end
