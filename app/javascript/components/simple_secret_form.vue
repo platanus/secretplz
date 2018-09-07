@@ -1,50 +1,56 @@
 <template>
-  <div class="simple-secret-form">
-    <form @submit="submit($event)" method="POST">
-      <div class="simple-secret-form__section">
-        <div class="simple-secret-form__section-header">
-          Enter a secret
-        </div>
-        <div class="simple-secret-form__section-content">
+  <div class="simple-secret-form" v-if="secret">
+    <div class="simple-secret-form__content">
+      <div class="simple-secret-form__message">
+        <span v-if="secret.message">{{ secret.message }}</span>
+        <span v-else>tell me the secret</span>
+      </div>
+
+      <div class="simple-secret-form__response">
+        <form @submit="submit($event)" method="POST" :action="`/sh/${secret.id}`">
           <input type="password" v-model="secretValue"/>
           <input type="hidden" name="_method" value="PUT"/>
           <input type="hidden" ref="encryptedInput" name="encrypted_data"/>
 
-          <button type="submit" :disabled="secretValue.length === 0">Submit</button>
-        </div>
+          <button type="submit" :disabled="secretValue.length === 0">Send</button>
+        </form>
       </div>
-    </form>
-    <div class="simple-secret-form__section">
-      <div class="simple-secret-form__section-header">
-        Public key
-      </div>
-      <div class="simple-secret-form__section-content">
-        <div class="simple-secret-form__public-key">
-          {{ publicKey }}
-        </div>
-      </div>
+    </div>
+
+    <div class="simple-secret-form__footer">
+      publickey: {{ secret.publicKey }}
+
+      <span v-if="secret.signature">
+        sigpayload: {{ secret.publicKey }}
+        signature: {{ secret.signature }}
+      </span>
     </div>
   </div>
 </template>
 
 <script>
 import ecies from '../services/simple_ecies';
+import api from '../services/api';
 
 export default {
   data: () => ({
+    secret: null,
     secretValue: '',
     encryptedValue: '',
     canSubmit: false,
   }),
-  props: ['publicKey'],
   methods: {
     submit(_event) {
       if (this.secretValue.length > 0) {
-        this.$refs.encryptedInput.value = ecies.encrypt(this.publicKey, this.secretValue);
+        this.$refs.encryptedInput.value = ecies.encrypt(this.secret.publicKey, this.secretValue);
       } else {
         _event.preventDefault();
       }
     },
+  },
+  async created () {
+    const secretId = window.location.hash.replace('#', '');
+    this.secret = await api.getSimpleSecret(secretId);
   },
 };
 </script>
