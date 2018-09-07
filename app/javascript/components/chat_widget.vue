@@ -1,16 +1,16 @@
 <template>
-  <div class="simple-secret-form" v-if="secret">
-    <div class="simple-secret-form__header">
+  <div class="chat-widget" v-if="secret">
+    <div class="chat-widget__header">
       <identity-bar :secret="secret"></identity-bar>
     </div>
 
-    <div class="simple-secret-form__content">
-      <div class="simple-secret-form__message">
+    <div class="chat-widget__content">
+      <div class="chat-widget__message">
         <span v-if="secret.message">{{ secret.message }}</span>
         <span v-else>tell me the secret</span>
       </div>
 
-      <div class="simple-secret-form__response">
+      <div class="chat-widget__response">
         <form @submit="submit($event)" method="POST" :action="`/sh/${secret.id}`">
           <input type="password" v-model="secretValue"/>
           <input type="hidden" name="_method" value="PUT"/>
@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <div class="simple-secret-form__footer">
+    <div class="chat-widget__footer">
       publickey: {{ secret.publicKey }}
 
       <span v-if="secret.signature">
@@ -65,7 +65,7 @@ export default {
 </script>
 
 <style lang="scss">
-.simple-secret-form {
+.chat-widget {
   max-width: 200px;
   border: 1px solid #e5e5e5;
   background: white;

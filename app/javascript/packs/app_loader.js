@@ -9,13 +9,12 @@
 import '../styles/common.scss';
 
 import Vue from 'vue';
-import SimpleSecretForm from '../components/simple_secret_form.vue';
-import SimpleSecretDisplay from '../components/simple_secret_display.vue';
+import ChatWidget from '../components/chat_widget.vue';
 
 document.addEventListener('DOMContentLoaded', () => {
   new Vue({
     el: '#vue-mount-point',
-    components: { SimpleSecretForm, SimpleSecretDisplay },
+    components: { ChatWidget },
   });
 });
 
