@@ -1,4 +1,8 @@
 class Secret < ApplicationRecord
+  BITCOIN_SIG_SIZE = 65
+  BITCOIN_SIG_VERSION_RANGE = (27..30)
+  BITCOIN_COMPACT_SIG_VERSION_RANGE = (21..34)
+
   attr_readonly :uuid
 
   has_many :parts, class_name: 'SecretPart', inverse_of: :secret
@@ -7,6 +11,7 @@ class Secret < ApplicationRecord
   validate :not_sealed
 
   before_validation :generate_uuid, on: :create
+  validate :valid_bitcoin_message_signature, if: 'signature.present?'
 
   def sealed?
     !sealed_at.nil?
@@ -24,6 +29,20 @@ class Secret < ApplicationRecord
 
   def not_sealed
     errors.add(:base, 'already sealed') if sealed_at_was.present?
+  end
+
+  def valid_bitcoin_message_signature
+    bin_signature = signature.unpack('m0').first
+    errors.add(:signature, 'invalid signature') unless bin_signature.bytesize == BITCOIN_SIG_SIZE
+
+    version = bin_signature.unpack('C')[0]
+    if BITCOIN_SIG_VERSION_RANGE.include? version
+      errors.add(:signature, 'not compact signature')
+    elsif !BITCOIN_COMPACT_SIG_VERSION_RANGE.include? version
+      errors.add(:signature, 'invalid signature')
+    end
+  rescue StandardError
+    errors.add(:signature, 'wrong format')
   end
 end
 
