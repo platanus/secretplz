@@ -12,7 +12,7 @@
 
       <div class="chat-widget__response">
         <form @submit="submit($event)" method="POST" :action="`/sh/${secret.id}`">
-          <input type="password" v-model="secretValue"/>
+          <input type="password" v-model="secretValue" autofocus=""/>
           <input type="hidden" name="_method" value="PUT"/>
           <input type="hidden" ref="encryptedInput" name="encrypted_data"/>
 
@@ -63,44 +63,92 @@ export default {
 
 <style lang="scss">
 .chat-widget {
-  max-width: 200px;
+  max-width: 500px;
   border: 1px solid #e5e5e5;
   background: white;
-  padding: 50px;
+  padding: 0;
 
-  &__section {
+  &__header {
+
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    background: beige;
+    padding: 10px 15px;
+    min-height: 300px;
+  }
+
+  &__message {
+    display: block;
+    position: relative;
+    align-self: flex-start;
+    width: 300px;
+    background: lightgreen;
+    padding: 10px;
     margin-bottom: 10px;
+    border-radius: 2px;
+    box-shadow: -1px -1px 3px rgba(0, 0, 0, 0.2);
   }
 
-  &__section-header {
-    display: block;
-    font-size: 20px;
+  &__message:after {
+    content: '';
+    position: absolute;
+    left: -10px;
+    top: 3px;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+    border-right-color: lightgreen;
+    border-left: 0;
+    border-top: 0;
+    box-shadow: 0px -1px rgba(0, 0, 0, 0.2);
   }
 
-  &__section-content {
+  &__response {
     display: block;
+    position: relative;
+    align-self: flex-end;
+    width: 300px;
+    background: white;
+    padding: 10px;
+    border-radius: 2px;
+    box-shadow: 1px -1px 3px rgba(0, 0, 0, 0.2);
 
     input {
+      display: block;
       border: none;
-      border-radius: 0;
-      border-bottom: 1px solid black;
-      background: #EFEFEF;
       height: 20px;
+      width: 80%;
     }
 
     button {
       border-radius: 4px;
       font-size: 13px;
-      background: #6da584;
+      background: #AAA;
       color: white;
       padding: 5px 10px;
+      float: right;
+
+      &:disabled {
+        background: #CCC;
+      }
     }
   }
 
-  &__public-key {
-    font-size: 10px;
-    overflow: hidden;
-    overflow-wrap: break-word;
+  &__response:after {
+    content: '';
+    position: absolute;
+    right: -10px;
+    top: 3px;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+    border-left-color: white;
+    border-right: 0;
+    border-top: 0;
+    box-shadow: 0px -1px rgba(0, 0, 0, 0.2);
   }
 }
 </style>
