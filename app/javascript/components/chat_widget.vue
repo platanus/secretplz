@@ -63,10 +63,10 @@ export default {
 
 <style lang="scss">
 .chat-widget {
-  max-width: 500px;
-  border: 1px solid #e5e5e5;
   background: white;
+  border: 3px solid #186573;
   padding: 0;
+  margin: 0;
 
   &__header {
 
