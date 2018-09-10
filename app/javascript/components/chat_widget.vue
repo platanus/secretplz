@@ -22,12 +22,7 @@
     </div>
 
     <div class="chat-widget__footer">
-      publickey: {{ secret.publicKey }}
-
-      <span v-if="secret.signature">
-        sigpayload: {{ secret.publicKey }}
-        signature: {{ secret.signature }}
-      </span>
+      <disclaimer-bar :secret="secret"></disclaimer-bar>
     </div>
   </div>
 </template>
@@ -37,6 +32,7 @@ import ecies from '../services/simple_ecies';
 import api from '../services/api';
 
 import IdentityBar from './identity_bar.vue';
+import DisclaimerBar from './disclaimer_bar.vue';
 
 export default {
   data: () => ({
@@ -47,6 +43,7 @@ export default {
   }),
   components: {
     'identity-bar': IdentityBar,
+    'disclaimer-bar': DisclaimerBar,
   },
   methods: {
     submit(_event) {
