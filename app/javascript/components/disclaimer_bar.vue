@@ -29,7 +29,6 @@ export default {
 </script>
 <style lang="scss">
 .disclaimer-bar {
-  position: relative;
   background: #c1b280;
   color: rgba(0, 0, 0, 0.60);
   font-size: 10px;
