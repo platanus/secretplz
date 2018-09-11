@@ -1,13 +1,16 @@
 class SecretsController < ApplicationController
   include ErrorConcern
 
-  respond_to :html, :json
+  def index
+    respond_to do |format|
+      format.html
+    end
+  end
 
   def create
     @secret = Secret.create! create_params
 
-    respond_with @secret do |format|
-      format.html { redirect_to secret_path id: @secret.uuid }
+    respond_to do |format|
       format.json { render json: @secret, status: :created }
     end
   end
@@ -15,7 +18,9 @@ class SecretsController < ApplicationController
   def show
     @secret = Secret.find_by! uuid: params[:id]
 
-    respond_with @secret
+    respond_to do |format|
+      format.json { render json: @secret }
+    end
   end
 
   def update
@@ -28,8 +33,8 @@ class SecretsController < ApplicationController
       raise NotImplementedError, 'multi part secret not implemented yet'
     end
 
-    respond_with @secret do |format|
-      format.html { redirect_to secret_path id: @secret.uuid }
+    respond_to do |format|
+      format.html
       format.json { render json: @secret }
     end
   end
@@ -39,7 +44,7 @@ class SecretsController < ApplicationController
   def create_params
     {
       public_key: secret_params.require(:public_key)
-    }
+    }.merge secret_params.permit(:message, :signature)
   end
 
   def secret_params

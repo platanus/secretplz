@@ -4,6 +4,13 @@ RSpec.describe SecretsController, type: :controller do
   context "given an existing secret" do
     let!(:secret) { create(:secret) }
 
+    describe "GET #index" do
+      it "renders index.html if format: html" do
+        get :index, params: { format: :html }
+        expect(response).to render_template(:index)
+      end
+    end
+
     describe "POST #create" do
       let(:public_key) { '02' * 33 }
 
@@ -14,9 +21,22 @@ RSpec.describe SecretsController, type: :controller do
         assert_serializer 'SecretSerializer'
       end
 
-      it "redirects to show if format: html" do
-        post :create, params: { public_key: public_key, format: :html }
-        expect(response).to redirect_to action: :show, id: assigns(:secret).uuid
+      let(:valid_sig) do
+        'H14wy79iaR30kfvhnUQhjLXH6Vd/KAoYQ7TkKKT41Fk1EkikmtYdddD47TbkeunjfNNyVJxx/jXFY4I17jv72GE='
+      end
+
+      it "properly handles message and signature parameters" do
+        post(
+          :create,
+          params: { public_key: public_key, message: 'foo', signature: valid_sig, format: :json }
+        )
+
+        expect(response).to have_http_status(:created)
+        expect(assigns(:secret).public_key).to eq public_key
+        expect(assigns(:secret).message).to eq 'foo'
+        expect(assigns(:secret).signature).to eq valid_sig
+
+        assert_serializer 'SecretSerializer'
       end
     end
 
@@ -26,11 +46,6 @@ RSpec.describe SecretsController, type: :controller do
         expect(response).to have_http_status(:success)
         expect(assigns(:secret)).to eq secret
         assert_serializer 'SecretSerializer'
-      end
-
-      it "renders new.html if format: html" do
-        get :show, params: { id: secret.uuid, format: :html }
-        expect(response).to render_template(:show)
       end
     end
 
@@ -47,7 +62,7 @@ RSpec.describe SecretsController, type: :controller do
 
       it "redirects to show if format: html" do
         put :update, params: { id: secret.uuid, encrypted_data: 'foobar', format: :html }
-        expect(response).to redirect_to action: :show, id: secret.uuid
+        expect(response).to render_template(:update)
       end
     end
   end
